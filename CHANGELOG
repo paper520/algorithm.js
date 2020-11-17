@@ -7,3 +7,7 @@ v0.1.1:
     date:2020-11-15
     changes:
       -  修复tree.js对于只有一个根节点不兼容问题
+v0.1.2:
+    date:2020-11-17
+    changes:
+      -  添加banner打包头说明文字

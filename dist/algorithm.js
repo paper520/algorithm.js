@@ -1,3 +1,16 @@
+/*!
+ * tool.js - 🔪 一些前端常用的算法实现合集。
+ * git+https://github.com/hai2007/algorithm.js.git
+ *
+ * author hai2007
+ *
+ * version 0.1.2
+ *
+ * Copyright (c) 2020 hai2007 走一步，再走一步。
+ * Released under the MIT license
+ *
+ * Date:Tue Nov 17 2020 20:01:48 GMT+0800 (GMT+08:00)
+ */
 (function () {
   'use strict';
 

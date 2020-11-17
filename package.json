@@ -1,11 +1,11 @@
 {
   "name": "@hai2007/algorithm",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "🔪 一些前端常用的算法实现合集。",
   "main": "./dist/algorithm.min.js",
   "scripts": {
     "start": "npm install && npm run build",
-    "build": "npm run rollup && npm run uglifyjs",
+    "build": "npm run rollup && npm run uglifyjs && cuf --config ./cuf.config.js",
     "rollup": "rollup --config rollup.config.js",
     "uglifyjs": "uglifyjs ./dist/algorithm.js -m -o ./dist/algorithm.min.js"
   },
