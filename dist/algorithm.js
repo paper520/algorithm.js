@@ -1,15 +1,15 @@
 /*!
- * tool.js - 🔪 一些前端常用的算法实现合集。
+ * 🔪 algorithm.js - 🔪 一些前端常用的算法实现合集。
  * git+https://github.com/hai2007/algorithm.js.git
  *
- * author hai2007
+ * author hai2007 < https://hai2007.gitee.io/sweethome >
  *
  * version 0.1.2
  *
- * Copyright (c) 2020 hai2007 走一步，再走一步。
+ * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Tue Nov 17 2020 20:01:48 GMT+0800 (GMT+08:00)
+ * Date:Wed Nov 18 2020 17:21:38 GMT+0800 (GMT+08:00)
  */
 (function () {
   'use strict';
@@ -30,7 +30,15 @@
     return _typeof(obj);
   }
 
-  // 基本的树结构位置生成算法
+  /*!
+   * 🔪 - 基本的树结构位置生成算法
+   * https://github.com/hai2007/algorithm.js/blob/master/tree.js
+   *
+   * author hai2007 < https://hai2007.gitee.io/sweethome >
+   *
+   * Copyright (c) 2020-present hai2007 走一步，再走一步。
+   * Released under the MIT license
+   */
   function tree (_config) {
     /**
      * 无论绘制的树结构是什么样子的
@@ -217,8 +225,34 @@
     return tree;
   }
 
+  /*!
+   * 🔪 - 解析xhtml为json对象返回
+   * https://github.com/hai2007/algorithm.js/blob/master/xhtmlToJson.js
+   *
+   * author hai2007 < https://hai2007.gitee.io/sweethome >
+   *
+   * Copyright (c) 2020-present hai2007 走一步，再走一步。
+   * Released under the MIT license
+   */
+  function xhtmlToJson (template) {}
+
+  /*!
+   * 🔪 - 设置或获取指定对象上字符串表达式对应的值
+   * https://github.com/hai2007/algorithm.js/blob/master/value.js
+   *
+   * author hai2007 < https://hai2007.gitee.io/sweethome >
+   *
+   * Copyright (c) 2020-present hai2007 走一步，再走一步。
+   * Released under the MIT license
+   */
+  var getValue = function getValue(target, express, scope) {};
+  var setValue = function setValue(target, express, value, scope) {};
+
   var algorithm = {
-    tree: tree
+    tree: tree,
+    xhtmlToJson: xhtmlToJson,
+    getValue: getValue,
+    setValue: setValue
   };
 
   if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {

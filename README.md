@@ -28,6 +28,26 @@ import tree from '@hai2007/algorithm/tree.js';
 
 [<< 查看文档](./apis/tree.md)
 
+## Special attention
+
+为了减小打包体积，上面单独引入的方式引入的文件都没有经过babel转义，如果你希望使用转义后的，可以有如下方式引入：
+
+```js
+import algorithm from '@hai2007/algorithm';
+```
+
+或
+
+```html
+<script src='https://cdn.jsdelivr.net/npm/@hai2007/algorithm'></script>
+```
+
+如果是node.js环境，请使用这种方式引入：
+
+```js
+const algorithm = require('@hai2007/algorithm');
+```
+
 ## 联系我们
 
 - QQ: 2501482523
@@ -37,4 +57,4 @@ import tree from '@hai2007/algorithm/tree.js';
 ---------------------------------------
 [MIT](https://github.com/hai2007/algorithm.js/blob/master/LICENSE)
 
-Copyright (c) 2020 hai2007 走一步，再走一步。
+Copyright (c) 2020-present hai2007 走一步，再走一步。

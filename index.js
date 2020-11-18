@@ -1,8 +1,13 @@
 import tree from './tree';
+import xhtmlToJson from './xhtmlToJson';
+import { getValue, setValue } from './value';
 
 // 导出
 let algorithm = {
-    tree
+    tree,
+    xhtmlToJson,
+    getValue,
+    setValue
 };
 
 if (typeof module === "object" && typeof module.exports === "object") {

@@ -21,14 +21,14 @@ module.exports = {
 
             let banner =
                 `/*!
- * tool.js - ${pkg.description}
+ * 🔪 algorithm.js - ${pkg.description}
  * ${pkg.repository.url}
  *
- * author ${pkg.author}
+ * author ${pkg.author} < https://hai2007.gitee.io/sweethome >
  *
  * version ${pkg.version}
  *
- * Copyright (c) 2020 hai2007 走一步，再走一步。
+ * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the ${pkg.license} license
  *
  * Date:${new Date()}

@@ -32,5 +32,8 @@
     "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "uglify-js": "^3.10.2"
+  },
+  "dependencies": {
+    "@hai2007/tool": "^0.3.0"
   }
 }
