@@ -5,7 +5,7 @@
 
 ```js
 // noIgnore为true表示不忽略任何标签，默认false
-var xhtmlJSON=tree(template[, noIgnore]);
+var xhtmlJSON=xhtmlToJson(template[, noIgnore]);
 ```
 
 这样我们就获取了包含需要信息的json对象，其实就是模仿浏览器构建的一棵树,每个结点有如下属性：
