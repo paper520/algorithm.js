@@ -11,3 +11,7 @@ v0.1.2:
     date:2020-11-17
     changes:
       -  添加banner打包头说明文字
+v0.2.0:
+    date:2020-11-21
+    changes:
+      -  添加 “解析xhtml为json对象返回” xhtmlToJson.js
