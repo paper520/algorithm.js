@@ -36,6 +36,14 @@ import xhtmlToJson from '@hai2007/algorithm/xhtmlToJson.js';
 
 [<< 查看文档](./apis/xhtmlToJson.md)
 
+- 设置或获取指定对象上字符串表达式对应的值
+
+```js
+import { getValue, setValue } from '@hai2007/algorithm/value.js';
+```
+
+[<< 查看文档](./apis/value.md)
+
 ## Special attention
 
 为了减小打包体积，上面单独引入的方式引入的文件都没有经过babel转义，如果你希望使用转义后的，可以有如下方式引入：

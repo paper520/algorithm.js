@@ -8,10 +8,39 @@
  * Released under the MIT license
  */
 
-export let getValue = (target, express, scope) => {
-    console.log('开发中');
+/**
+ * express举例子：
+ *
+ * [00]  ["a"].b[c]
+ * [01]  a
+ * [02]  [0]['value-index'][index+1]
+ *
+ * 如果是getValue,express还可以包含运算符：
+ *  + - * / %  数值运算符
+ *  && || !    逻辑运算符
+ *
+ * [03]  flag+10
+ * [04]  a.b[index+1]-10
+ * [05]  (a+b)/10-c[d]
+ * [06]  [((a+b)-c)*f]+d
+ *
+ * [07]  !flag
+ * [08]  (a>0 && b<=1) || !flag
+ * [09]  '(flag)' == "("+temp+")"
+ * [10]  a>10?"flag1":"flag2"
+ *
+ */
+
+// 获取
+export let getValue = (target, express, scope = {}) => {
+
+
+
 };
 
-export let setValue = (target, express, value, scope) => {
-    console.log('开发中');
+// 设置
+export let setValue = (target, express, value, scope = {}) => {
+
+
+
 };
