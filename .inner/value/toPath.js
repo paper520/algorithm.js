@@ -1,4 +1,6 @@
-import calcValue from './calcValue';
+import evalValue from './eval';
+import calcValue from './value';
+import { isString } from '@hai2007/tool/type';
 
 // 小括号去除方法
 
@@ -25,7 +27,8 @@ let doit1 = function (target, expressArray, scope) {
 
                 // 为0说明主的小括号归约结束了
                 if (flag == 0) {
-                    newExpressArray.push(doit1(target, temp, scope));
+                    let _value = evalValue(doit1(target, temp, scope));
+                    newExpressArray.push(isString(_value) ? _value + '@string' : _value);
                     temp = [];
                 }
             } else {
@@ -37,13 +40,13 @@ let doit1 = function (target, expressArray, scope) {
     }
 
     // 去掉小括号以后，调用中括号去掉方法
-    return doit2(target, expressArray, scope);
+    return doit2(expressArray);
 
 };
 
 // 中括号嵌套去掉方法
 
-let doit2 = function (target, expressArray, scope) {
+let doit2 = function (expressArray) {
 
     let hadMore = true;
     while (hadMore) {
@@ -78,8 +81,9 @@ let doit2 = function (target, expressArray, scope) {
                 hadMore = true;
 
                 // 计算
-                let tempValue = calcValue(temp);
-                newExpressArray[newExpressArray.length - 1] = newExpressArray[newExpressArray.length - 1][tempValue];
+                let tempValue = evalValue(temp);
+                let _value = newExpressArray[newExpressArray.length - 1][tempValue];
+                newExpressArray[newExpressArray.length - 1] = isString(_value) ? _value + "@string" : _value;
 
                 // 状态恢复
                 flag = false;
@@ -98,10 +102,27 @@ let doit2 = function (target, expressArray, scope) {
 
     }
 
-    console.log(expressArray);
-
+    return expressArray;
 };
 
+// 路径
+// ["[",express,"]","[",express"]","[",express,"]"]
+// 变成
+// [express][express][express]
+
+let doit3 = function (expressArray) {
+    let newExpressArray = [], temp = [];
+    for (let i = 0; i < expressArray.length; i++) {
+        if (expressArray[i] == '[') {
+            temp = [];
+        } else if (expressArray[i] == ']') {
+            newExpressArray.push(evalValue(temp));
+        } else {
+            temp.push(expressArray[i]);
+        }
+    }
+    return newExpressArray;
+};
 
 // 获取路径数组(核心是归约的思想)
 
@@ -109,6 +130,29 @@ export default function toPath(target, expressArray, scope) {
 
     let newExpressArray = doit1(target, expressArray, scope);
 
-    console.log(newExpressArray);
+    // 其实无法就三类
+    // 第一类：[express][express][express]express
+    // 第二类：express
+    // 第三类：[express][express][express]
 
+    let path;
+
+    // 第二类
+    if (newExpressArray[0] != '[') {
+        path = [evalValue(newExpressArray)];
+    }
+
+    // 第三类
+    else if (newExpressArray[newExpressArray.length - 1] == ']') {
+        path = doit3(newExpressArray);
+    }
+
+    // 第一类
+    else {
+        let lastIndex = newExpressArray.lastIndexOf(']');
+        let tempPath = doit3(newExpressArray.slice(0, lastIndex + 1));
+        path = [evalValue([calcValue(target, tempPath, scope), ...newExpressArray.slice(lastIndex + 1)])]
+    }
+
+    return path;
 };

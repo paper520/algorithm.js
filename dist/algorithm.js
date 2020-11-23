@@ -4,12 +4,12 @@
  *
  * author hai2007 < https://hai2007.gitee.io/sweethome >
  *
- * version 0.3.0
+ * version 0.4.0-alpha
  *
  * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Mon Nov 23 2020 18:31:36 GMT+0800 (GMT+08:00)
+ * Date:Tue Nov 24 2020 01:07:54 GMT+0800 (GMT+08:00)
  */
 (function () {
   'use strict';
@@ -28,6 +28,39 @@
     }
 
     return _typeof(obj);
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   /*!
@@ -269,6 +302,9 @@
     return input === null;
   };
   var isString = _isString;
+  var isArray = function isArray(input) {
+    return Array.isArray(input);
+  };
 
   function analyseTag (attrString) {
     var attr = {},
@@ -820,7 +856,7 @@
             next();
           }
 
-          expressArray.push(temp);
+          expressArray.push(temp + "@string");
           next();
         } // 如果是数字
         else if (/\d/.test(currentChar)) {
@@ -902,12 +938,13 @@
 
                   if (dot) {
                     expressArray.push('[');
-                    expressArray.push(nextNValue(len - 1));
+                    expressArray.push(nextNValue(len - 1) + '@string');
                     expressArray.push(']');
                   } else {
                     var tempKey = nextNValue(len - 1); // 如果不是有前置.，那就是需要求解了
 
-                    expressArray.push(tempKey in scope ? scope[tempKey] : target[tempKey]);
+                    var tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
+                    expressArray.push(isString(tempValue) ? tempValue + "@string" : tempValue);
                   }
 
                   i += len - 2;
@@ -922,18 +959,38 @@
     return expressArray;
   }
 
-  function calcValue (expressArray) {
+  function evalValue (expressArray) {
     var express = "";
 
     for (var i = 0; i < expressArray.length; i++) {
       // 字符串
-      if (isString(expressArray[i]) && ['==', '+', '-', '*', '/', '!'].indexOf(expressArray[i]) < 0) express += JSON.stringify(expressArray[i]); // 特殊字符
+      if (isString(expressArray[i]) && /@string$/.test(expressArray[i])) express += JSON.stringify(expressArray[i].replace(/@string$/, '')); // 特殊字符
       else if (isNull(expressArray[i])) express += "null";else if (isUndefined(expressArray[i])) express += "undefined"; // 默认
         else express += expressArray[i];
+    } // 此次采用了eval，待修改
+
+
+    return eval(express);
+  }
+
+  function calcValue (target, expressArray, scope) {
+    var value = expressArray[0] in scope ? scope[expressArray[0]] : target[expressArray[0]];
+
+    for (var i = 1; i < expressArray.length; i++) {
+      try {
+        value = value[expressArray[i]];
+      } catch (e) {
+        console.error({
+          target: target,
+          scope: scope,
+          expressArray: expressArray,
+          index: i
+        });
+        throw e;
+      }
     }
 
-    console.log(express);
-    return eval(express);
+    return value;
   }
 
   var doit1 = function doit1(target, expressArray, scope) {
@@ -959,7 +1016,9 @@
           flag -= 1; // 为0说明主的小括号归约结束了
 
           if (flag == 0) {
-            newExpressArray.push(doit1(target, temp));
+            var _value = evalValue(doit1(target, temp));
+
+            newExpressArray.push(isString(_value) ? _value + '@string' : _value);
             temp = [];
           }
         } else {
@@ -971,11 +1030,11 @@
     } // 去掉小括号以后，调用中括号去掉方法
 
 
-    return doit2(target, expressArray);
+    return doit2(expressArray);
   }; // 中括号嵌套去掉方法
 
 
-  var doit2 = function doit2(target, expressArray, scope) {
+  var doit2 = function doit2(expressArray) {
     var hadMore = true;
 
     while (hadMore) {
@@ -1008,8 +1067,9 @@
         else if (expressArray[i] == ']' && flag) {
             hadMore = true; // 计算
 
-            var tempValue = calcValue(temp);
-            newExpressArray[newExpressArray.length - 1] = newExpressArray[newExpressArray.length - 1][tempValue]; // 状态恢复
+            var tempValue = evalValue(temp);
+            var _value = newExpressArray[newExpressArray.length - 1][tempValue];
+            newExpressArray[newExpressArray.length - 1] = isString(_value) ? _value + "@string" : _value; // 状态恢复
 
             flag = false;
           } else {
@@ -1023,12 +1083,53 @@
 
       expressArray = newExpressArray;
     }
+
+    return expressArray;
+  }; // 路径
+  // ["[",express,"]","[",express"]","[",express,"]"]
+  // 变成
+  // [express][express][express]
+
+
+  var doit3 = function doit3(expressArray) {
+    var newExpressArray = [],
+        temp = [];
+
+    for (var i = 0; i < expressArray.length; i++) {
+      if (expressArray[i] == '[') {
+        temp = [];
+      } else if (expressArray[i] == ']') {
+        newExpressArray.push(evalValue(temp));
+      } else {
+        temp.push(expressArray[i]);
+      }
+    }
+
+    return newExpressArray;
   }; // 获取路径数组(核心是归约的思想)
 
 
   function toPath(target, expressArray, scope) {
-    var newExpressArray = doit1(target, expressArray);
-    console.log(newExpressArray);
+    var newExpressArray = doit1(target, expressArray); // 其实无法就三类
+    // 第一类：[express][express][express]express
+    // 第二类：express
+    // 第三类：[express][express][express]
+
+    var path; // 第二类
+
+    if (newExpressArray[0] != '[') {
+      path = [evalValue(newExpressArray)];
+    } // 第三类
+    else if (newExpressArray[newExpressArray.length - 1] == ']') {
+        path = doit3(newExpressArray);
+      } // 第一类
+      else {
+          var lastIndex = newExpressArray.lastIndexOf(']');
+          var tempPath = doit3(newExpressArray.slice(0, lastIndex + 1));
+          path = [evalValue([calcValue(target, tempPath, scope)].concat(_toConsumableArray(newExpressArray.slice(lastIndex + 1))))];
+        }
+
+    return path;
   }
 
   /*!
@@ -1065,16 +1166,36 @@
   // 解析一段表达式
 
   var evalExpress = function evalExpress(target, express) {
+    var scope = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var expressArray = analyseExpress(target, express, scope);
+    var path = toPath(target, expressArray, scope); // 如果不是表达式
+
+    if (path.length > 1) throw new Error("Illegal expression : ".concat(express, "\nstep='evalExpress',path=").concat(path, ",expressArray=").concat(expressArray));
+    return path[0];
   }; // 获取
 
   var getValue = function getValue(target, express) {
     var scope = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    var expressArray = analyseExpress(target, express, scope); // console.log(expressArray);
-
-    var path = toPath(target, expressArray); // console.log(path);
+    var expressArray = analyseExpress(target, express, scope);
+    var path = toPath(target, expressArray, scope);
+    return calcValue(target, path, scope);
   }; // 设置
 
   var setValue = function setValue(target, express, value) {
+    var scope = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    var expressArray = analyseExpress(target, express, scope);
+    var path = toPath(target, expressArray, scope);
+    var _target = target;
+
+    for (var i = 0; i < path.length - 1; i++) {
+      // 如果需要补充
+      if (!(path[i] in _target)) _target[path[i]] = isArray(_target) ? [] : {}; // 拼接下一个
+
+      _target = _target[path[i]];
+    }
+
+    _target[path[path.length - 1]] = value;
+    return target;
   };
 
   var algorithm = {

@@ -1,3 +1,4 @@
+import { isString } from '@hai2007/tool/type';
 import $RegExp from '../RegExp';
 
 // 把表达式按照最小单位切割
@@ -117,7 +118,7 @@ step='analyseExpress',index=${i}`);
                 temp += currentChar;
                 next();
             }
-            expressArray.push(temp);
+            expressArray.push(temp + "@string");
             next();
         }
 
@@ -199,12 +200,13 @@ step='analyseExpress',index=${i}`);
                 while (i + len <= express.length && $RegExp.identifier.test(nextNValue(len))) len += 1;
                 if (dot) {
                     expressArray.push('[');
-                    expressArray.push(nextNValue(len - 1));
+                    expressArray.push(nextNValue(len - 1) + '@string');
                     expressArray.push(']');
                 } else {
                     let tempKey = nextNValue(len - 1);
                     // 如果不是有前置.，那就是需要求解了
-                    expressArray.push(tempKey in scope ? scope[tempKey] : target[tempKey]);
+                    let tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
+                    expressArray.push(isString(tempValue) ? tempValue + "@string" : tempValue);
                 }
                 i += (len - 2); next();
             }

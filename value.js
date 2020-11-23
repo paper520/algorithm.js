@@ -10,6 +10,8 @@
 
 import analyseExpress from './.inner/value/analyseExpress';
 import toPath from './.inner/value/toPath';
+import calcValue from './.inner/value/value';
+import { isArray } from '@hai2007/tool/type';
 
 /**
  * express举例子：
@@ -36,23 +38,39 @@ import toPath from './.inner/value/toPath';
 
 // 解析一段表达式
 export let evalExpress = (target, express, scope = {}) => {
+    let expressArray = analyseExpress(target, express, scope);
+    let path = toPath(target, expressArray, scope);
 
+    // 如果不是表达式
+    if (path.length > 1) throw new Error(`Illegal expression : ${express}
+step='evalExpress',path=${path},expressArray=${expressArray}`);
+
+    return path[0];
 };
 
 // 获取
 export let getValue = (target, express, scope = {}) => {
-
     let expressArray = analyseExpress(target, express, scope);
-    // console.log(expressArray);
     let path = toPath(target, expressArray, scope);
-
-    // console.log(path);
-
+    return calcValue(target, path, scope);
 };
 
 // 设置
 export let setValue = (target, express, value, scope = {}) => {
 
+    let expressArray = analyseExpress(target, express, scope);
+    let path = toPath(target, expressArray, scope);
 
+    let _target = target;
+    for (let i = 0; i < path.length - 1; i++) {
 
+        // 如果需要补充
+        if (!(path[i] in _target)) _target[path[i]] = isArray(_target) ? [] : {};
+
+        // 拼接下一个
+        _target = _target[path[i]];
+    }
+
+    _target[path[path.length - 1]] = value;
+    return target;
 };
