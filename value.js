@@ -9,6 +9,7 @@
  */
 
 import analyseExpress from './.inner/value/analyseExpress';
+import toPath from './.inner/value/toPath';
 
 /**
  * express举例子：
@@ -33,11 +34,19 @@ import analyseExpress from './.inner/value/analyseExpress';
  *
  */
 
+// 解析一段表达式
+export let evalExpress = (target, express, scope = {}) => {
+
+};
+
 // 获取
 export let getValue = (target, express, scope = {}) => {
 
     let expressArray = analyseExpress(target, express, scope);
-    console.log(expressArray);
+    // console.log(expressArray);
+    let path = toPath(target, expressArray, scope);
+
+    // console.log(path);
 
 };
 

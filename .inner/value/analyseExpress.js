@@ -1,8 +1,7 @@
 import $RegExp from '../RegExp';
 
 // 把表达式按照最小单位切割
-// 后续我们的任务就是对这个数组进行归结即可(归结交付给归结算法，这里不继续处理)
-// 归结的顺序取决于运算符的优先级
+// 后续我们的任务就是对这个数组进行归约即可(归约交付给别的地方，这里不继续处理)
 
 /**
  * 例如：
@@ -59,7 +58,7 @@ export default function (target, express, scope) {
 
         if (i >= express.length) break;
 
-        // 先归结普通的符号
+        // 先匹配普通的符号
         // + - * / %
         // && || !
         // ? :
@@ -147,13 +146,20 @@ step='analyseExpress',index=${i}`);
         // 如果是特殊符号
         // 也就是类似null、undefined等
         else if (['null', 'true'].indexOf(nextNValue(4)) > -1) {
-            expressArray.push(nextNValue(4));
+            expressArray.push({
+                "null": null,
+                "true": true
+            }[nextNValue(4)]);
             i += 3; next();
         } else if (['false'].indexOf(nextNValue(5)) > -1) {
-            expressArray.push(nextNValue(5));
+            expressArray.push({
+                'false': false
+            }[nextNValue(5)]);
             i += 4; next();
         } else if (['undefined'].indexOf(nextNValue(9)) > -1) {
-            expressArray.push(nextNValue(9));
+            expressArray.push({
+                "undefined": undefined
+            }[nextNValue(9)]);
             i += 8; next();
         }
 

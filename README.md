@@ -39,7 +39,7 @@ import xhtmlToJson from '@hai2007/algorithm/xhtmlToJson.js';
 - 设置或获取指定对象上字符串表达式对应的值
 
 ```js
-import { getValue, setValue } from '@hai2007/algorithm/value.js';
+import { evalExpress, getValue, setValue } from '@hai2007/algorithm/value.js';
 ```
 
 [<< 查看文档](./apis/value.md)
