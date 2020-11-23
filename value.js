@@ -8,6 +8,8 @@
  * Released under the MIT license
  */
 
+import analyseExpress from './.inner/value/analyseExpress';
+
 /**
  * express举例子：
  *
@@ -34,7 +36,8 @@
 // 获取
 export let getValue = (target, express, scope = {}) => {
 
-
+    let expressArray = analyseExpress(target, express, scope);
+    console.log(expressArray);
 
 };
 

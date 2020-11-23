@@ -12,6 +12,24 @@
 
     <script>
 
+        algorithm.getValue({ a: { b: [1, 2, 3, 4] } }, '["a"].b[c]', { c: 1 });//
+        algorithm.getValue({ a: 10 }, "a");//
+        algorithm.getValue({}, "[0]['value-index'][index+1]");//
+
+        algorithm.getValue({}, "flag+10");//
+        algorithm.getValue({}, "a.b[index+1]-10");//
+        algorithm.getValue({}, "(a+b)/10-c[d]");//
+        algorithm.getValue({}, "[((a+b)-c)*f]+d");//
+
+
+        algorithm.getValue({}, "!flag");//
+        algorithm.getValue({}, "(a>0 && b<=1) || !flag");//
+        algorithm.getValue({}, "'(flag)' == \"(\"+temp+\")\"");//
+
+
+        algorithm.getValue({ a: 10 }, 'a>10?"flag1":"flag2"');//
+        algorithm.getValue({ flag: 1 }, 'flag+10');//
+        algorithm.getValue({ a: { b: [1, 2, 3] } }, 'a.b[index+1]-10', { index: -1 });//
 
     </script>
 
