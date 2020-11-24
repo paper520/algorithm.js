@@ -20,7 +20,7 @@ QUnit.test('value/evalExpress', 11, function () {
     deepEqual(-8.7, algorithm.evalExpress({ a: 1, b: 2, d: 3 }, "(a+b)/10-c[d]", { c: [6, 7, 8, 9] }));
     deepEqual(104, algorithm.evalExpress([100], "[((a+b)-c)*f]+d", { a: 1, b: 2, c: 3, d: 4, f: 5 }));
     deepEqual(false, algorithm.evalExpress({ flag: false }, "!flag", { flag: true }));
-    deepEqual(true, algorithm.evalExpress({ flag: false }, "(a>0 && b<=1) || !flag", { flag: true, a: 2, b: 1 }));
+    deepEqual(true, algorithm.evalExpress({ flag: false }, "(a>0 &&b<=1) || !flag", { flag: true, a: 2, b: 1 }));
     deepEqual(true, algorithm.evalExpress({}, '"(flag)" == "("+temp+")"', { temp: 'flag' }));
     deepEqual(false, algorithm.evalExpress({}, '"(flag)" == "("+temp+")"', { temp: 'xxx' }));
     deepEqual('flag2', algorithm.evalExpress({}, 'a>10?"flag1":"flag2"', { a: 1 }));
