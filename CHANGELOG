@@ -15,3 +15,7 @@ v0.2.0:
     date:2020-11-21
     changes:
       -  添加 “解析xhtml为json对象返回” xhtmlToJson.js
+v0.4.0:
+    date:2020-11-24
+    changes:
+      -  添加 “设置或获取指定对象上字符串表达式对应的值” value.js

@@ -15,3 +15,21 @@ JSLitmus.test('解析指定对象上字符串表达式', function () {
     algorithm.evalExpress({ a: 'flag' }, 'a', {});
 
 });
+
+JSLitmus.test('new Function', function () {
+
+    var temp = (new Function("return { a: 'flag' }['a']"))();
+
+});
+
+JSLitmus.test('eval', function () {
+
+    eval("{ a: 'flag' }['a']");
+
+});
+
+JSLitmus.test('js', function () {
+
+    let temp = { a: 'flag' }['a'];
+
+});

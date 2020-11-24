@@ -64,13 +64,17 @@ export default function (target, express, scope) {
         // && || !
         // ? :
         // [ ] ( )
+        // > < >= <= == === != !==
         // 如果是&或者|比较特殊
 
         if (['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='].indexOf(currentChar) > -1) {
 
             // 对于特殊的符号
             if (['&', '|', '='].indexOf(currentChar) > -1) {
-                if (['&&', '||', '=='].indexOf(nextNValue(2)) > -1) {
+                if (['==='].indexOf(nextNValue(3)) > -1) {
+                    expressArray.push(nextNValue(3));
+                    i += 2; next();
+                } else if (['&&', '||', '=='].indexOf(nextNValue(2)) > -1) {
                     expressArray.push(nextNValue(2));
                     i += 1; next();
                 } else {
@@ -83,7 +87,10 @@ step='analyseExpress',index=${i}`);
             else {
 
                 // 拦截部分比较特殊的
-                if (['>=', '<='].indexOf(nextNValue(2)) > -1) {
+                if (['!=='].indexOf(nextNValue(3)) > -1) {
+                    expressArray.push(nextNValue(3));
+                    i += 2; next();
+                } else if (['>=', '<=', '!='].indexOf(nextNValue(2)) > -1) {
                     expressArray.push(nextNValue(2));
                     i += 1; next();
                 }

@@ -1,6 +1,6 @@
 {
   "name": "@hai2007/algorithm",
-  "version": "0.4.0-alpha",
+  "version": "0.4.0",
   "description": "🔪 一些前端常用的算法实现合集。",
   "main": "./dist/algorithm.min.js",
   "scripts": {
@@ -34,6 +34,6 @@
     "uglify-js": "^3.10.2"
   },
   "dependencies": {
-    "@hai2007/tool": "^0.3.0"
+    "@hai2007/tool": "^0.3.1"
   }
 }
