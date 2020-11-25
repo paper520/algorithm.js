@@ -31,6 +31,9 @@ import $RegExp from '../RegExp';
 // 可以提前对部分语法错误进行报错，方便定位调试
 // 因为后续的操作越来越复杂，错误越提前越容易定位
 
+let specialCode1 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='];
+let specialCode2 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '>', '<', '=', '<=', '>=', '==', '===', '!=', '!=='];
+
 export default function (target, express, scope) {
 
     // 剔除开头和结尾的空白
@@ -67,7 +70,7 @@ export default function (target, express, scope) {
         // > < >= <= == === != !==
         // 如果是&或者|比较特殊
 
-        if (['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='].indexOf(currentChar) > -1) {
+        if (specialCode1.indexOf(currentChar) > -1) {
 
             // 对于特殊的符号
             if (['&', '|', '='].indexOf(currentChar) > -1) {
@@ -226,6 +229,20 @@ step='analyseExpress',index=${i}`);
         }
 
     }
+
+    // 实际情况是，对于-1等特殊数字，可能存在误把1前面的-号作为运算符的错误，这里拦截校对一下
+    let length = 0;
+    for (let i = 0; i < expressArray.length; i++) {
+        if (["+", "-"].indexOf(expressArray[i]) > -1 &&
+            // 如果前面的也是运算符或开头，这个应该就不应该是运算符了
+            (i == 0 || specialCode2.indexOf(expressArray[length - 1]) > -1)) {
+            expressArray[length++] = +(expressArray[i] + expressArray[i + 1]);
+            i += 1;
+        } else {
+            expressArray[length++] = expressArray[i];
+        }
+    }
+    expressArray.length = length;
 
     return expressArray;
 };

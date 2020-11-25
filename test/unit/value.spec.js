@@ -27,3 +27,17 @@ QUnit.test('value/evalExpress', 11, function () {
     deepEqual('flag1', algorithm.evalExpress({}, 'a>10?"flag1":"flag2"', { a: 11 }));
 
 });
+
+
+QUnit.test('value/实际调试', 3, function () {
+
+    deepEqual(10, algorithm.evalExpress({
+        lct: { nodes: [{ position: 10 }] }
+    }, "lct.nodes[value.begin].position", {
+        value: { begin: 0 }
+    }));
+
+    deepEqual(99, algorithm.evalExpress({}, '-1*(_size.height-100)', { _size: { height: 1 } }));
+    deepEqual(-4.5, algorithm.evalExpress({}, '-1.5*(_size.height- -2)', { _size: { height: 1 } }))
+
+});

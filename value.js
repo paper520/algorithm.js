@@ -39,6 +39,7 @@ import { isArray } from '@hai2007/tool/type';
 // 解析一段表达式
 export let evalExpress = (target, express, scope = {}) => {
     let expressArray = analyseExpress(target, express, scope);
+    console.log(expressArray);
     let path = toPath(target, expressArray, scope);
 
     // 如果不是表达式

@@ -50,6 +50,7 @@ let doit2 = function (expressArray) {
 
     let hadMore = true;
     while (hadMore) {
+
         hadMore = false;
 
         let newExpressArray = [], temp = [],
@@ -68,11 +69,11 @@ let doit2 = function (expressArray) {
                     // 如果之前已经遇到了，说明之前保存的是错误的，需要同步会主数组
                     newExpressArray.push('[');
                     for (let j = 0; j < temp.length; j++) newExpressArray.push(temp[j]);
-                    temp = [];
                 } else {
                     // 如果之前没有遇到，修改标记即可
                     flag = true;
                 }
+                temp = [];
             }
 
             // 如果遇到了结束，这说明当前暂存的就是最小归结单元

@@ -33,3 +33,17 @@ JSLitmus.test('js', function () {
     let temp = { a: 'flag' }['a'];
 
 });
+
+JSLitmus.test('evalExpress:复杂的', function () {
+
+    algorithm.evalExpress({
+        _size: { width: 462 }, data: [
+            [20, 30, 10, 35],
+            [40, 35, 30, 55],
+            [33, 38, 33, 40],
+            [40, 40, 32, 42]]
+    }, '( _size.width - 100 ) / data.length * ( index + 0.2 ) + 50', {
+        index: 2
+    });
+
+});

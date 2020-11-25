@@ -4,12 +4,12 @@
  *
  * author hai2007 < https://hai2007.gitee.io/sweethome >
  *
- * version 0.4.0
+ * version 0.4.1
  *
  * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Tue Nov 24 2020 21:13:42 GMT+0800 (GMT+08:00)
+ * Date:Wed Nov 25 2020 11:51:44 GMT+0800 (GMT+08:00)
  */
 (function () {
   'use strict';
@@ -781,6 +781,8 @@
   // 可以提前对部分语法错误进行报错，方便定位调试
   // 因为后续的操作越来越复杂，错误越提前越容易定位
 
+  var specialCode1 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='];
+  var specialCode2 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '>', '<', '=', '<=', '>=', '==', '===', '!=', '!=='];
   function analyseExpress (target, express, scope) {
     // 剔除开头和结尾的空白
     express = express.trim();
@@ -810,7 +812,7 @@
       // > < >= <= == === != !==
       // 如果是&或者|比较特殊
 
-      if (['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='].indexOf(currentChar) > -1) {
+      if (specialCode1.indexOf(currentChar) > -1) {
         // 对于特殊的符号
         if (['&', '|', '='].indexOf(currentChar) > -1) {
           if (['==='].indexOf(nextNValue(3)) > -1) {
@@ -957,8 +959,22 @@
                     throw new Error("Illegal express : ".concat(express, "\nstep='analyseExpress',index=").concat(i));
                   }
               }
+    } // 实际情况是，对于-1等特殊数字，可能存在误把1前面的-号作为运算符的错误，这里拦截校对一下
+
+
+    var length = 0;
+
+    for (var _i = 0; _i < expressArray.length; _i++) {
+      if (["+", "-"].indexOf(expressArray[_i]) > -1 && ( // 如果前面的也是运算符或开头，这个应该就不应该是运算符了
+      _i == 0 || specialCode2.indexOf(expressArray[length - 1]) > -1)) {
+        expressArray[length++] = +(expressArray[_i] + expressArray[_i + 1]);
+        _i += 1;
+      } else {
+        expressArray[length++] = expressArray[_i];
+      }
     }
 
+    expressArray.length = length;
     return expressArray;
   }
 
@@ -1177,12 +1193,12 @@
             for (var j = 0; j < temp.length; j++) {
               newExpressArray.push(temp[j]);
             }
-
-            temp = [];
           } else {
             // 如果之前没有遇到，修改标记即可
             flag = true;
           }
+
+          temp = [];
         } // 如果遇到了结束，这说明当前暂存的就是最小归结单元
         // 计算后放回主数组
         else if (expressArray[i] == ']' && flag) {
@@ -1289,6 +1305,7 @@
   var evalExpress = function evalExpress(target, express) {
     var scope = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var expressArray = analyseExpress(target, express, scope);
+    console.log(expressArray);
     var path = toPath(target, expressArray, scope); // 如果不是表达式
 
     if (path.length > 1) throw new Error("Illegal expression : ".concat(express, "\nstep='evalExpress',path=").concat(path, ",expressArray=").concat(expressArray));

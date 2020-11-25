@@ -19,3 +19,11 @@ v0.4.0:
     date:2020-11-24
     changes:
       -  添加 “设置或获取指定对象上字符串表达式对应的值” value.js
+v0.4.1:
+    date:2020-11-25
+    changes:
+      -  对value.js进行一些bug修复
+       （
+            1.toPath.js中去中括号方法未及时重置需要提前处理记录
+            2.analyseExpress.js中添加对于特殊情况的后处理，比如-1等
+        ）

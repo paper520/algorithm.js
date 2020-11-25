@@ -12,33 +12,60 @@
 
     <script>
 
-        console.log(algorithm.getValue({ a: { b: [1, { d: "value" }, 3, 4] } }, '["a"].b[1+c[1+c["d"]]].d', { c: { d: 0, "1": 0 } }));
-        console.log(algorithm.evalExpress({ a: { b: [1, { d: "value" }, 3, 4] } }, '(a.b[0] / (f-1) )*c.d', { c: { d: 1 }, f: 9 }));
+        // console.log(algorithm.getValue({ a: { b: [1, { d: "value" }, 3, 4] } }, '["a"].b[1+c[1+c["d"]]].d', { c: { d: 0, "1": 0 } }));
+        // console.log(algorithm.evalExpress({ a: { b: [1, { d: "value" }, 3, 4] } }, '(a.b[0] / (f-1) )*c.d', { c: { d: 1 }, f: 9 }));
 
-        console.log(algorithm.getValue({ a: { b: [1, 2, 3, 4] } }, '["a"].b[c]', { c: 1 }));//
-        console.log(algorithm.evalExpress({ a: 10 }, "a"));//
-        console.log(algorithm.evalExpress({ a: 10 }, "a", { a: 11 }));//
-        console.log(algorithm.getValue([{ 'value-index': [123] }], "[0]['value-index'][index+1]", { index: -1 }));//
+        // console.log(algorithm.getValue({ a: { b: [1, 2, 3, 4] } }, '["a"].b[c]', { c: 1 }));//
+        // console.log(algorithm.evalExpress({ a: 10 }, "a"));//
+        // console.log(algorithm.evalExpress({ a: 10 }, "a", { a: 11 }));//
+        // console.log(algorithm.getValue([{ 'value-index': [123] }], "[0]['value-index'][index+1]", { index: -1 }));//
 
-        console.log(algorithm.evalExpress({ flag: -7 }, "flag+10"));//
-        console.log(algorithm.evalExpress({ a: { b: [1] } }, "a.b[index+1]-10", { index: -1 }));//
-        console.log(algorithm.evalExpress({ a: 1, b: 2, c: [12], d: 0 }, "(a+b)/10-c[d]"));//
-        console.log(algorithm.evalExpress({ a: 0, b: 0, c: 1, f: 10, d: 2 }, "((a+b)-c)*f+d"));//
-
-
-        console.log(algorithm.evalExpress({ flag: true }, "!flag"));//
-        console.log(algorithm.evalExpress({ a: -1, b: 0, flag: true }, "(a>0 && b<=1) || !flag"));//
-        console.log(algorithm.evalExpress({ temp: 'flag' }, "'(flag)' == '('+temp+')'"));//
+        // console.log(algorithm.evalExpress({ flag: -7 }, "flag+10"));//
+        // console.log(algorithm.evalExpress({ a: { b: [1] } }, "a.b[index+1]-10", { index: -1 }));//
+        // console.log(algorithm.evalExpress({ a: 1, b: 2, c: [12], d: 0 }, "(a+b)/10-c[d]"));//
+        // console.log(algorithm.evalExpress({ a: 0, b: 0, c: 1, f: 10, d: 2 }, "((a+b)-c)*f+d"));//
 
 
-        console.log(algorithm.evalExpress({ a: 10 }, 'a>10?"flag1":"flag2"'));//
-        console.log(algorithm.evalExpress({ flag: 1 }, 'flag+10'));//
-        console.log(algorithm.evalExpress({ a: { b: [1, 2, 3] } }, 'a.b[index+1]-10', { index: -1 }));//
+        // console.log(algorithm.evalExpress({ flag: true }, "!flag"));//
+        // console.log(algorithm.evalExpress({ a: -1, b: 0, flag: true }, "(a>0 && b<=1) || !flag"));//
+        // console.log(algorithm.evalExpress({ temp: 'flag' }, "'(flag)' == '('+temp+')'"));//
 
-        console.log(algorithm.getValue({ a: { b: [1, 2, 3] } }, '"a"'));//
 
-        console.log(algorithm.evalExpress({ a: { b: [1, 2, 3] } }, '"a"'));//
-        console.log(algorithm.evalExpress({ flag: ")" }, 'flag+"1"'));//
+        // console.log(algorithm.evalExpress({ a: 10 }, 'a>10?"flag1":"flag2"'));//
+        // console.log(algorithm.evalExpress({ flag: 1 }, 'flag+10'));//
+        // console.log(algorithm.evalExpress({ a: { b: [1, 2, 3] } }, 'a.b[index+1]-10', { index: -1 }));//
+
+        // console.log(algorithm.getValue({ a: { b: [1, 2, 3] } }, '"a"'));//
+
+        // console.log(algorithm.evalExpress({ a: { b: [1, 2, 3] } }, '"a"'));//
+        // console.log(algorithm.evalExpress({ flag: ")" }, 'flag+"1"'));//
+
+        var temp;
+
+        // temp = algorithm.evalExpress({
+        //     lct: { nodes: [{ position: 10 }] }
+        // }, "lct.nodes[value.begin].position", {
+        //     value: { begin: 0 }
+        // });
+
+
+        // temp = algorithm.evalExpress({}, '-1.5*(_size.height--2)', { _size: { height: 1 } });
+
+        for (let i = 0; i < 4; i++) {
+            temp = algorithm.evalExpress({
+                _size: { width: 462 }, data: [
+                    [20, 30, 10, 35],
+                    [40, 35, 30, 55],
+                    [33, 38, 33, 40],
+                    [40, 40, 32, 42]]
+            }, '( _size.width - 100 ) / data.length * ( index + 0.2 ) + 50', {
+                index: i
+            });
+            console.log(temp);
+        }
+
+
+        // console.log(temp);
 
     </script>
 
