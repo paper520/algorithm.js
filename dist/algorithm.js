@@ -9,7 +9,7 @@
  * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Wed Nov 25 2020 11:51:44 GMT+0800 (GMT+08:00)
+ * Date:Wed Nov 25 2020 12:49:41 GMT+0800 (GMT+08:00)
  */
 (function () {
   'use strict';
@@ -773,7 +773,7 @@
    * 然后，进一步解析得到：
    * [{value:9},'[','value',']','>',10,'&&',7,'<','||','no','==','yes']
    *
-   * (当然，我们实际运算的时候，直接把上面两步合成了一步，分开说明是为了方便解释)
+   * (当然，我们实际运算的时候，可能和这里不完全一致，这里只是为了方便解释我们的主体思想)
    *
    * 然后我们返回上面的结果即可！
    */
@@ -1305,7 +1305,6 @@
   var evalExpress = function evalExpress(target, express) {
     var scope = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var expressArray = analyseExpress(target, express, scope);
-    console.log(expressArray);
     var path = toPath(target, expressArray, scope); // 如果不是表达式
 
     if (path.length > 1) throw new Error("Illegal expression : ".concat(express, "\nstep='evalExpress',path=").concat(path, ",expressArray=").concat(expressArray));
