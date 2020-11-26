@@ -43,4 +43,19 @@ node记录的是每个结点的信息，每个结点中的left和top就是该结
 
 这是一棵从左到右，根节点位于左中心，每个节点位于一个1x1的正方形中心的单元树。
 
+<img height="320" src="./images/tree.jpg" alt="clunch tree">
+
+比如上图结点『油画』的数据如下：
+
+```js
+"油画":{
+    children: [];
+    data: (2) ["油画", "手绘"];
+    id: "油画";
+    left: 1.5;
+    pid: "手绘";
+    top: 1.5
+}
+```
+
 [<< 返回首页](../README.md)
