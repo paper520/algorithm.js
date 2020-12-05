@@ -1,10 +1,10 @@
-let getExpressValue = value => {
+var getExpressValue = function (value) {
     // 这里是计算的内部，不需要考虑那么复杂的类型
     if (typeof value == 'string') return value.replace(/@string$/, '');
     return value;
 };
 
-let setExpressValue = value => {
+var setExpressValue = function (value) {
     if (typeof value == 'string') return value + "@string";
     return value;
 };
@@ -24,7 +24,7 @@ export default function (expressArray) {
 
     // !
     // 因为合并以后数组长度一定越来越短，我们直接复用以前的数组即可
-    let length = 0, i = 0;
+    var length = 0, i = 0;
     for (; i < expressArray.length; i++) {
         if (expressArray[i] == '!') {
             // 由于是逻辑运算符，如果是字符串，最后的@string是否去掉已经没有意义了

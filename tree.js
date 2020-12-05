@@ -19,7 +19,7 @@ export default function (_config) {
      *  3.每个结点都是一块1*1的正方形，top和left分别表示正方形中心的位置
      */
 
-    let config = _config || {},
+    var config = _config || {},
         // 维护的树
         alltreedata,
         // 根结点ID
@@ -29,13 +29,13 @@ export default function (_config) {
      * 把内部保存的树结点数据
      * 计算结束后会调用配置的绘图方法
      */
-    let update = function () {
+    var update = function () {
 
-        let beforeDis = [], size = 0, maxDeep = 0;
+        var beforeDis = [], size = 0, maxDeep = 0;
         (function positionCalc(pNode, deep) {
 
             if (deep > maxDeep) maxDeep = deep;
-            let flag;
+            var flag;
             for (flag = 0; flag < pNode.children.length; flag++)
                 // 因为全部的子结点的位置确定了，父结点的y位置就是子结点的中间位置
                 // 因此有子结点的，先计算子结点
@@ -57,7 +57,7 @@ export default function (_config) {
                 // 添加的新结点top值第一种求法：本层上边缘+1（比如上边缘是-0.5，那么top最小是top=-0.5+1=0.5）
                 alltreedata[pNode.id].top = beforeDis[deep] + 1;
 
-                let pTop = beforeDis[deep] + 1 + (alltreedata[pNode.pid].children.length - 1) * 0.5;
+                var pTop = beforeDis[deep] + 1 + (alltreedata[pNode.pid].children.length - 1) * 0.5;
                 // 计算的原则是：如果第一种可行，选择第一种，否则必须选择第二种
                 // 判断第一种是否可行的方法就是：如果第一种计算后确定的孩子上边缘不对导致孩子和孩子的前兄弟重合就是可行的
                 if (pTop - 1 < beforeDis[deep - 1])
@@ -77,11 +77,11 @@ export default function (_config) {
             // 无法掌握父辈兄弟的情况
             // 可能会出现父亲和兄弟重叠问题
             if (alltreedata[pNode.id].top <= beforeDis[deep]) {
-                let needUp = beforeDis[deep] + 1 - alltreedata[pNode.id].top;
+                var needUp = beforeDis[deep] + 1 - alltreedata[pNode.id].top;
                 (function doUp(_pid, _deep) {
                     alltreedata[_pid].top += needUp;
                     if (beforeDis[_deep] < alltreedata[_pid].top) beforeDis[_deep] = alltreedata[_pid].top;
-                    let _flag;
+                    var _flag;
                     for (_flag = 0; _flag < alltreedata[_pid].children.length; _flag++) {
                         doUp(alltreedata[_pid].children[_flag], _deep + 1);
                     }
@@ -117,11 +117,11 @@ export default function (_config) {
      *  "children":[cid1、cid2、...]
      * }
      */
-    let toInnerTree = function (initTree) {
+    var toInnerTree = function (initTree) {
 
-        let tempTree = {};
+        var tempTree = {};
         // 根结点
-        let temp = config.root(initTree), id, rid;
+        var temp = config.root(initTree), id, rid;
         id = rid = config.id(temp);
         tempTree[id] = {
             "data": temp,
@@ -130,10 +130,10 @@ export default function (_config) {
             "children": []
         };
 
-        let num = 1;
+        var num = 1;
         // 根据传递的原始数据，生成内部统一结构
         (function createTree(pdata, pid) {
-            let children = config.child(pdata, initTree), flag;
+            var children = config.child(pdata, initTree), flag;
             num += children ? children.length : 0;
             for (flag = 0; children && flag < children.length; flag++) {
                 id = config.id(children[flag]);
@@ -150,15 +150,15 @@ export default function (_config) {
 
         return {
             value: [rid, tempTree],
-            num
+            num: num
         };
     };
 
     // 可以传递任意格式的树原始数据
     // 只要配置对应的解析方法即可
-    let tree = function (initTree) {
+    var tree = function (initTree) {
 
-        let treeData = toInnerTree(initTree);
+        var treeData = toInnerTree(initTree);
         alltreedata = treeData.value[1];
         rootid = treeData.value[0];
 

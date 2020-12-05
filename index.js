@@ -3,12 +3,12 @@ import xhtmlToJson from './xhtmlToJson';
 import { evalExpress, getValue, setValue } from './value';
 
 // 导出
-let algorithm = {
-    tree,
-    xhtmlToJson,
-    evalExpress,
-    getValue,
-    setValue
+var algorithm = {
+    tree: tree,
+    xhtmlToJson: xhtmlToJson,
+    evalExpress: evalExpress,
+    getValue: getValue,
+    setValue: setValue
 };
 
 if (typeof module === "object" && typeof module.exports === "object") {

@@ -25,16 +25,6 @@ export default {
         require('rollup-plugin-commonjs')({
             include: "node_modules/**",
             exclude: []
-        }),
-
-        // ES5+转义
-        require('rollup-plugin-babel')({
-            babelrc: false,
-            presets: [
-                "@babel/preset-env"
-            ],
-            include: ["node_modules/**", "./**"],
-            exclude: []
         })
 
     ]

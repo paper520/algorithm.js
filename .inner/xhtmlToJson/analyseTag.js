@@ -2,14 +2,14 @@ import $RegExp from '../RegExp';
 
 // 分析结点的属性
 export default function (attrString) {
-    let attr = {}, index = 0;
+    var attr = {}, index = 0;
 
     attrString = attrString.trim();
 
-    let getOneAttr = function () {
+    var getOneAttr = function () {
 
         // 属性名和属性值
-        let attrName = "", attrValue = "";
+        var attrName = "", attrValue = "";
 
         // 先寻找属性名
         for (; index < attrString.length; index++) {
@@ -35,7 +35,7 @@ export default function (attrString) {
                 index += 1;
 
                 // 由于属性可能由引号包裹或直接暴露
-                let preCode = null, preLeng = -1;
+                var preCode = null, preLeng = -1;
 
                 // 如果是由'或者"包裹
                 if (attrString.substr(index, 1) == '"' || attrString.substr(index, 1) == "'") {

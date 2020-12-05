@@ -4,17 +4,17 @@ import { isString } from '@hai2007/tool/type';
 
 // 小括号去除方法
 
-let doit1 = function (target, expressArray, scope) {
+var doit1 = function (target, expressArray, scope) {
 
     // 先消小括号
     // 其实也就是归约小括号
     if (expressArray.indexOf('(') > -1) {
 
-        let newExpressArray = [], temp = [],
+        var newExpressArray = [], temp = [],
             // 0表示还没有遇到左边的小括号
             // 1表示遇到了一个，以此类推，遇到一个右边的会减1
             flag = 0;
-        for (let i = 0; i < expressArray.length; i++) {
+        for (var i = 0; i < expressArray.length; i++) {
             if (expressArray[i] == '(') {
                 if (flag > 0) {
                     // 说明这个应该是需要计算的括号里面的括号
@@ -27,7 +27,7 @@ let doit1 = function (target, expressArray, scope) {
 
                 // 为0说明主的小括号归约结束了
                 if (flag == 0) {
-                    let _value = evalValue(doit1(target, temp, scope));
+                    var _value = evalValue(doit1(target, temp, scope));
                     newExpressArray.push(isString(_value) ? _value + '@string' : _value);
                     temp = [];
                 }
@@ -46,20 +46,20 @@ let doit1 = function (target, expressArray, scope) {
 
 // 中括号嵌套去掉方法
 
-let doit2 = function (expressArray) {
+var doit2 = function (expressArray) {
 
-    let hadMore = true;
+    var hadMore = true;
     while (hadMore) {
 
         hadMore = false;
 
-        let newExpressArray = [], temp = [],
+        var newExpressArray = [], temp = [],
 
             // 如果为true表示当前在试探寻找归约最小单元的结束
             flag = false;
 
         // 开始寻找里面需要归约的最小单元（也就是可以立刻获取值的）
-        for (let i = 0; i < expressArray.length; i++) {
+        for (var i = 0; i < expressArray.length; i++) {
 
             // 这说明这是一个需要归约的
             // 不过不一定是最小单元
@@ -68,7 +68,7 @@ let doit2 = function (expressArray) {
                 if (flag) {
                     // 如果之前已经遇到了，说明之前保存的是错误的，需要同步会主数组
                     newExpressArray.push('[');
-                    for (let j = 0; j < temp.length; j++) newExpressArray.push(temp[j]);
+                    for (var j = 0; j < temp.length; j++) newExpressArray.push(temp[j]);
                 } else {
                     // 如果之前没有遇到，修改标记即可
                     flag = true;
@@ -82,8 +82,8 @@ let doit2 = function (expressArray) {
                 hadMore = true;
 
                 // 计算
-                let tempValue = evalValue(temp);
-                let _value = newExpressArray[newExpressArray.length - 1][tempValue];
+                var tempValue = evalValue(temp);
+                var _value = newExpressArray[newExpressArray.length - 1][tempValue];
                 newExpressArray[newExpressArray.length - 1] = isString(_value) ? _value + "@string" : _value;
 
                 // 状态恢复
@@ -111,9 +111,9 @@ let doit2 = function (expressArray) {
 // 变成
 // [express][express][express]
 
-let doit3 = function (expressArray) {
-    let newExpressArray = [], temp = [];
-    for (let i = 0; i < expressArray.length; i++) {
+var doit3 = function (expressArray) {
+    var newExpressArray = [], temp = [];
+    for (var i = 0; i < expressArray.length; i++) {
         if (expressArray[i] == '[') {
             temp = [];
         } else if (expressArray[i] == ']') {
@@ -129,14 +129,14 @@ let doit3 = function (expressArray) {
 
 export default function toPath(target, expressArray, scope) {
 
-    let newExpressArray = doit1(target, expressArray, scope);
+    var newExpressArray = doit1(target, expressArray, scope);
 
     // 其实无法就三类
     // 第一类：[express][express][express]express
     // 第二类：express
     // 第三类：[express][express][express]
 
-    let path;
+    var path;
 
     // 第二类
     if (newExpressArray[0] != '[') {
@@ -150,9 +150,11 @@ export default function toPath(target, expressArray, scope) {
 
     // 第一类
     else {
-        let lastIndex = newExpressArray.lastIndexOf(']');
-        let tempPath = doit3(newExpressArray.slice(0, lastIndex + 1));
-        path = [evalValue([calcValue(target, tempPath, scope), ...newExpressArray.slice(lastIndex + 1)])]
+        var lastIndex = newExpressArray.lastIndexOf(']');
+        var tempPath = doit3(newExpressArray.slice(0, lastIndex + 1));
+        var tempArray = newExpressArray.slice(lastIndex + 1);
+        tempArray.unshift(calcValue(target, tempPath, scope));
+        path = [evalValue(tempArray)];
     }
 
     return path;

@@ -3,23 +3,23 @@ import analyseTag from './analyseTag';
 
 export default function (template) {
 
-    let i = -1,
+    var i = -1,
 
         // 当前面对的字符
         currentChar = null;
 
     // 如果前面是获取的js或css，还有pre等开始标签，比较特殊，直接寻址闭合的
-    let preIsSpecial = false, specialCode = "";
-    let specialTag = ['script', 'pre', 'style', 'code'];
+    var preIsSpecial = false, specialCode = "";
+    var specialTag = ['script', 'pre', 'style', 'code'];
 
     // 获取下一个字符
-    let next = function () {
+    var next = function () {
         currentChar = i++ < template.length - 1 ? template[i] : null;
         return currentChar;
     };
 
     // 获取往后n个值
-    let nextNValue = function (n) {
+    var nextNValue = function (n) {
         return template.substring(i, n + i > template.length ? template.length : n + i);
     };
 
@@ -41,7 +41,7 @@ export default function (template) {
      */
     return function () {
 
-        let tag = currentChar, tagObj = {};
+        var tag = currentChar, tagObj = {};
 
         if (tag == null) return null;
 
@@ -100,7 +100,7 @@ export default function (template) {
         else if (tag == '<') {
 
             // 标记是否处于属性值是字符串包裹中
-            let isAttrString = false, attrLeftValue = null, attrLeftLen = null;
+            var isAttrString = false, attrLeftValue = null, attrLeftLen = null;
 
             // 如果在包裹中或者没有遇到‘>’说明没有结束
             while (isAttrString || currentChar != '>' && i < template.length) {
@@ -110,7 +110,7 @@ export default function (template) {
                 // 如果是包裹里面，试探是否即将遇到了结束
                 if (isAttrString) {
 
-                    let next23Value = nextNValue(attrLeftLen + 1).substring(1);
+                    var next23Value = nextNValue(attrLeftLen + 1).substring(1);
                     if (next23Value == attrLeftValue) {
                         isAttrString = false;
                     }
@@ -120,7 +120,7 @@ export default function (template) {
                 // 如果在包裹外面，试探是否即将进入包裹
                 else {
 
-                    let next23Value = nextNValue(2);
+                    var next23Value = nextNValue(2);
                     if (next23Value == '="' || next23Value == "='") {
                         attrLeftValue = next23Value.replace('=', '');
                         attrLeftLen = 1;
@@ -156,13 +156,13 @@ export default function (template) {
                 tag = tag.replace(/^</, '');
 
                 tagObj.tagName = "";
-                let i = 0;
-                for (; i < tag.length; i++) {
-                    if (tag[i] == ' ') break;
-                    tagObj.tagName += tag[i];
+                var j = 0;
+                for (; j < tag.length; j++) {
+                    if (tag[j] == ' ') break;
+                    tagObj.tagName += tag[j];
                 }
 
-                let attrString = tag.substring(i);
+                var attrString = tag.substring(j);
                 if ($RegExp.blanksReg.test(attrString)) {
                     tagObj.attrs = {};
                 } else {

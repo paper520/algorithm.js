@@ -31,33 +31,33 @@ import $RegExp from '../RegExp';
 // 可以提前对部分语法错误进行报错，方便定位调试
 // 因为后续的操作越来越复杂，错误越提前越容易定位
 
-let specialCode1 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='];
-let specialCode2 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '>', '<', '=', '<=', '>=', '==', '===', '!=', '!=='];
+var specialCode1 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '[', ']', '(', ")", '>', '<', '='];
+var specialCode2 = ['+', '-', '*', '/', '%', '&', '|', '!', '?', ':', '>', '<', '=', '<=', '>=', '==', '===', '!=', '!=='];
 
 export default function (target, express, scope) {
 
     // 剔除开头和结尾的空白
     express = express.trim();
 
-    let i = -1,
+    var i = -1,
 
         // 当前面对的字符
         currentChar = null;
 
     // 获取下一个字符
-    let next = function () {
+    var next = function () {
         currentChar = i++ < express.length - 1 ? express[i] : null;
         return currentChar;
     };
 
     // 获取往后n个值
-    let nextNValue = function (n) {
+    var nextNValue = function (n) {
         return express.substring(i, n + i > express.length ? express.length : n + i);
     };
 
     next();
 
-    let expressArray = [];
+    var expressArray = [];
     while (true) {
 
         if (i >= express.length) break;
@@ -81,8 +81,7 @@ export default function (target, express, scope) {
                     expressArray.push(nextNValue(2));
                     i += 1; next();
                 } else {
-                    throw new Error(`Illegal expression : ${express}
-step='analyseExpress',index=${i}`);
+                    throw new Error("Illegal expression : " + express + "\nstep='analyseExpress',index=" + i);
                 }
             }
 
@@ -109,7 +108,7 @@ step='analyseExpress',index=${i}`);
 
         // 如果是字符串
         else if (['"', "'"].indexOf(currentChar) > -1) {
-            let temp = "", beginTag = currentChar;
+            var temp = "", beginTag = currentChar;
             next();
 
             // 如果没有遇到结束标签
@@ -119,8 +118,7 @@ step='analyseExpress',index=${i}`);
                 if (i >= express.length) {
 
                     // 如果还没有遇到结束标识就结束了，属于字符串未闭合错误
-                    throw new Error(`String unclosed error : ${express}
-step='analyseExpress',index=${i}`);
+                    throw new Error("String unclosed error : " + express + "\nstep='analyseExpress',index=" + i);
 
                 }
 
@@ -134,8 +132,8 @@ step='analyseExpress',index=${i}`);
 
         // 如果是数字
         else if (/\d/.test(currentChar)) {
-            let dotFlag = 'no'; // no表示还没有匹配到.，如果已经匹配到了，标识为yes，如果匹配到了.，可是后面还没有遇到数组，标识为error
-            let temp = currentChar; next();
+            var dotFlag = 'no'; // no表示还没有匹配到.，如果已经匹配到了，标识为yes，如果匹配到了.，可是后面还没有遇到数组，标识为error
+            var temp = currentChar; next();
             while (i < express.length) {
                 if (/\d/.test(currentChar)) {
                     temp += currentChar;
@@ -183,7 +181,7 @@ step='analyseExpress',index=${i}`);
 
         else {
 
-            let dot = false;
+            var dot = false;
 
             // 对于开头有.进行特殊捕获，因为有.意味着这个值应该可以变成['key']的形式
             // 这是为了和[key]进行区分，例如：
@@ -206,16 +204,16 @@ step='analyseExpress',index=${i}`);
 
             if ($RegExp.identifier.test(currentChar)) {
 
-                let len = 1;
+                var len = 1;
                 while (i + len <= express.length && $RegExp.identifier.test(nextNValue(len))) len += 1;
                 if (dot) {
                     expressArray.push('[');
                     expressArray.push(nextNValue(len - 1) + '@string');
                     expressArray.push(']');
                 } else {
-                    let tempKey = nextNValue(len - 1);
+                    var tempKey = nextNValue(len - 1);
                     // 如果不是有前置.，那就是需要求解了
-                    let tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
+                    var tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
                     expressArray.push(isString(tempValue) ? tempValue + "@string" : tempValue);
                 }
                 i += (len - 2); next();
@@ -223,23 +221,22 @@ step='analyseExpress',index=${i}`);
 
             // 都不是，那就是错误
             else {
-                throw new Error(`Illegal express : ${express}
-step='analyseExpress',index=${i}`);
+                throw new Error("Illegal express : " + express + "\nstep='analyseExpress',index=" + i);
             }
         }
 
     }
 
     // 实际情况是，对于-1等特殊数字，可能存在误把1前面的-号作为运算符的错误，这里拦截校对一下
-    let length = 0;
-    for (let i = 0; i < expressArray.length; i++) {
-        if (["+", "-"].indexOf(expressArray[i]) > -1 &&
+    var length = 0;
+    for (var j = 0; j < expressArray.length; j++) {
+        if (["+", "-"].indexOf(expressArray[j]) > -1 &&
             // 如果前面的也是运算符或开头，这个应该就不应该是运算符了
-            (i == 0 || specialCode2.indexOf(expressArray[length - 1]) > -1)) {
-            expressArray[length++] = +(expressArray[i] + expressArray[i + 1]);
-            i += 1;
+            (j == 0 || specialCode2.indexOf(expressArray[length - 1]) > -1)) {
+            expressArray[length++] = +(expressArray[j] + expressArray[j + 1]);
+            j += 1;
         } else {
-            expressArray[length++] = expressArray[i];
+            expressArray[length++] = expressArray[j];
         }
     }
     expressArray.length = length;

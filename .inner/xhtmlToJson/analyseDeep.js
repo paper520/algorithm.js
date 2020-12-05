@@ -7,9 +7,9 @@ export default function (tagArray) {
     // 闭合标签
     tagArray = closeTag(tagArray);
 
-    let deep = 0, tagDeepArray = [];
+    var deep = 0, tagDeepArray = [];
 
-    tagArray.forEach(tag => {
+    tagArray.forEach(function (tag) {
 
         if (tag.type == 'beginTag') {
 
@@ -64,11 +64,11 @@ export default function (tagArray) {
 };
 
 // 标记所有没有闭合结点的直接自闭合
-let closeTag = function (tagArray) {
+var closeTag = function (tagArray) {
 
-    let needClose = [];
+    var needClose = [];
 
-    tagArray.forEach((tag, i) => {
+    tagArray.forEach(function (tag, i) {
         if (tag.type == 'beginTag') {
 
             needClose.push([i, tag.tagName]);
@@ -77,7 +77,7 @@ let closeTag = function (tagArray) {
 
             while (needClose.length > 0) {
 
-                let needCloseTag = needClose.pop();
+                var needCloseTag = needClose.pop();
 
                 if (needCloseTag[1] == tag.tagName) {
                     break;

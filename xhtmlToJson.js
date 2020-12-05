@@ -20,9 +20,9 @@ export default function (template, noIgnore) {
     if (!isString(template)) throw new Error("Template must be a String!");
 
     // 获取读取下一个标签对象
-    let nextTag = nextTagFun(template.trim());
+    var nextTag = nextTagFun(template.trim());
 
-    let tag = nextTag(), DomTree = [];
+    var tag = nextTag(), DomTree = [];
     while (tag != null) {
 
         if (tag.type == 'textcode' && $RegExp.blanksReg.test(tag.tagName)) {
@@ -66,18 +66,18 @@ export default function (template, noIgnore) {
      * 需要注意的是：如果一个文本结点内容只包含回车，tab，空格等空白字符，会直接被忽视
      */
 
-    let presNode = [null], preDeep = 0;
-    for (let i = 0; i < DomTree.length; i++) {
+    var presNode = [null], preDeep = 0;
+    for (var i = 0; i < DomTree.length; i++) {
 
         // 当前结点
-        let currentIndex = i, currentDeep = DomTree[i].__deep__;
+        var currentIndex = i, currentDeep = DomTree[i].__deep__;
         DomTree[i].childNodes = [];
         DomTree[i].preNode = null;
         DomTree[i].nextNode = null;
 
         // 前置三个结点
-        let lastPre = presNode[presNode.length - 1];
-        let last2Pre = presNode.length > 1 ? presNode[presNode.length - 2] : null;
+        var lastPre = presNode[presNode.length - 1];
+        var last2Pre = presNode.length > 1 ? presNode[presNode.length - 2] : null;
 
 
         // 如果遇到的是兄弟结点
@@ -112,8 +112,8 @@ export default function (template, noIgnore) {
         // 如果是遇到了祖先
         else {
 
-            let preTempIndex = presNode[presNode.length - 1 - (preDeep - currentDeep)];
-            let preTemp2Index = presNode[presNode.length - 2 - (preDeep - currentDeep)];
+            var preTempIndex = presNode[presNode.length - 1 - (preDeep - currentDeep)];
+            var preTemp2Index = presNode[presNode.length - 2 - (preDeep - currentDeep)];
 
             // 修改兄弟关系
             DomTree[currentIndex].preNode = preTempIndex;
@@ -124,7 +124,7 @@ export default function (template, noIgnore) {
             if (preTemp2Index != null) DomTree[preTemp2Index].childNodes.push(currentIndex);
 
             // 校对presNode
-            for (let i = 0; i < preDeep - currentDeep; i++) { presNode.pop(); }
+            for (var j = 0; j < preDeep - currentDeep; j++) { presNode.pop(); }
             presNode[presNode.length - 1] = currentIndex;
 
         }
