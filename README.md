@@ -46,7 +46,7 @@ import { evalExpress, getValue, setValue } from '@hai2007/algorithm/value.js';
 
 ## Special attention
 
-为了减小打包体积，上面单独引入的方式引入的文件都没有经过babel转义，如果你希望使用转义后的，可以有如下方式引入：
+如果你希望一下子引入全部方法，可以有如下方式引入：
 
 ```js
 import algorithm from '@hai2007/algorithm';
