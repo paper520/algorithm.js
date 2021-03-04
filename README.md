@@ -6,6 +6,9 @@
   <a href="https://www.jsdelivr.com/package/npm/@hai2007/algorithm"><img src="https://data.jsdelivr.com/v1/package/npm/@hai2007/algorithm/badge" alt="CDN"></a>
   <a href="https://www.npmjs.com/package/@hai2007/algorithm"><img src="https://img.shields.io/npm/v/@hai2007/algorithm.svg" alt="Version"></a>
   <a href="https://github.com/hai2007/algorithm.js/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@hai2007/algorithm.svg" alt="License"></a>
+  <a href="https://github.com/hai2007/algorithm.js">
+        <img alt="GitHub repo stars" src="https://img.shields.io/github/stars/hai2007/algorithm.js?style=social">
+    </a>
 </p>
 
 ## Issues
@@ -115,11 +118,6 @@ const algorithm = require('@hai2007/algorithm');
 - 分支限界
 
 对比回溯法就很容易思考，用广度优先的办法，不断扩大当前节点的孩子为当前节点，主要是求解一个最优解，算法相比回溯法要简单些。
-
-## 联系我们
-
-- QQ: 2501482523
-- Email: 2501482523@qq.com
 
 开源协议
 ---------------------------------------
