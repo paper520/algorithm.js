@@ -131,6 +131,12 @@ const algorithm = require('@hai2007/algorithm');
 
 [<< 查看例子代码](./算法练习/分支限界法)
 
+- 其它
+
+除了上面这些总结外，还有一些未分类的技巧，比如有些算法依赖特殊场景等。
+
+[<< 查看例子代码](./算法练习/其它)
+
 开源协议
 ---------------------------------------
 [MIT](https://github.com/hai2007/algorithm.js/blob/master/LICENSE)
