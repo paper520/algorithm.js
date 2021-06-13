@@ -4,8 +4,6 @@ import $RegExp from '../RegExp';
 // 比如一个注释就是一块，无论注释的内容有多少
 export default function (source) {
 
-    console.log(source);
-
     var i = -1,
 
         // 当前面对的字符

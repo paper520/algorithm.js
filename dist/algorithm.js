@@ -9,7 +9,7 @@
  * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Sun Jun 13 2021 11:40:24 GMT+0800 (GMT+08:00)
+ * Date:Sun Jun 13 2021 16:27:39 GMT+0800 (GMT+08:00)
  */
 (function () {
     'use strict';
@@ -1413,8 +1413,6 @@
     // 比如一个注释就是一块，无论注释的内容有多少
     function analyseBlock (source) {
 
-        console.log(source);
-
         var i = -1,
 
             // 当前面对的字符
@@ -1542,6 +1540,33 @@
         return blocks;
     }
 
+    function toSelector (preSelectorArray, deep) {
+
+        var selectors = preSelectorArray[0], i, j, k;
+
+        // 一层层深入
+        for (i = 1; i < deep; i++) {
+
+            var temp = [];
+            // 前置循环
+            for (j = 0; j < selectors.length; j++) {
+
+                // 预选循环
+                for (k = 0; k < preSelectorArray[i].length; k++) {
+
+                    temp.push(selectors[j] + preSelectorArray[i][k]);
+
+                }
+
+            }
+
+            selectors = temp;
+        }
+
+        // 最后补充 {
+        return "\n" + (selectors.join(',')) + "{\n";
+    }
+
     /*!
      * 🔪 - 把 SCSS 解析成 CSS 的算法实现
      * https://github.com/hai2007/algorithm.js/blob/master/scss.js
@@ -1554,10 +1579,92 @@
 
     function scss (source) {
 
+        // 分析出代码块
+
         var blocks = analyseBlock(source);
 
-        console.log(blocks);
+        // 根据代码块获得最终代码
 
+        var i, j, cssCode = "", preSelectorArray = [], deep = 0;
+        for (i = 0; i < blocks.length; i++) {
+
+            // 注释 double
+            if (blocks[i].type == 'comment-double') {
+
+                cssCode += blocks[i].value;
+
+            }
+
+            // 注释 single
+            else if (blocks[i].type == 'comment-single') {
+
+                cssCode += "\n/* " + blocks[i].value + " */\n";
+
+            }
+
+            // 开始
+            else if (blocks[i].type == 'begin') {
+
+                var preSplit = blocks[i].value.split(',');
+                var preSelect = [];
+                for (j = 0; j < preSplit.length; j++) {
+
+                    // 去掉两端的空格
+                    preSelect[j] = preSplit[j].trim().replace(/\{$/, '');
+
+                    // 判断拼接方式
+                    if (/^&/.test(preSelect[j])) {
+                        preSelect[j] = preSelect[j].replace(/^&/, '');
+                    } else {
+                        preSelect[j] = " " + preSelect[j];
+                    }
+
+                }
+
+                // 登记到前缀数组
+                preSelectorArray[deep] = preSelect;
+                deep += 1;
+            }
+
+            // 结束
+            else if (blocks[i].type == 'end') {
+
+                deep -= 1;
+
+            }
+
+            // 语句
+            else if (blocks[i].type == 'statement') {
+
+                // 如果是第一个
+                j = 1;
+                var preType = blocks[i - j].type;
+                while (['comment-double', 'comment-single'].indexOf(preType) > -1) {
+                    j += 1;
+                    preType = blocks[i - j].type;
+                }
+                if (['end', 'begin'].indexOf(preType) > -1) {
+                    cssCode += toSelector(preSelectorArray, deep);
+                }
+
+                cssCode += "\n" + blocks[i].value + "\n";
+
+                // 如果是最后一个
+                j = 1;
+                var nextType = blocks[i + j].type;
+                while (['comment-double', 'comment-single'].indexOf(nextType) > -1) {
+                    j += 1;
+                    nextType = blocks[i + j].type;
+                }
+                if (['end', 'begin'].indexOf(nextType) > -1) {
+                    cssCode += "\n}\n";
+                }
+
+            }
+
+        }
+
+        return cssCode;
     }
 
     // 导出
