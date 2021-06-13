@@ -40,3 +40,7 @@ v0.5.1:
     date:2021-01-16
     changes:
       -  增加 “xhtmlToJson.js” 对错误的html的兼容能力
+v0.6.0:
+    date:2021-06-13
+    changes:
+      -  增加 “把 SCSS 解析成 CSS 的算法实现” scss.js

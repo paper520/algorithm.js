@@ -1,6 +1,7 @@
 import tree from './tree';
 import xhtmlToJson from './xhtmlToJson';
 import { evalExpress, getValue, setValue } from './value';
+import scss from './scss';
 
 // 导出
 var algorithm = {
@@ -8,7 +9,8 @@ var algorithm = {
     xhtmlToJson: xhtmlToJson,
     evalExpress: evalExpress,
     getValue: getValue,
-    setValue: setValue
+    setValue: setValue,
+    scss: scss
 };
 
 if (typeof module === "object" && typeof module.exports === "object") {

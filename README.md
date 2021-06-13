@@ -47,6 +47,14 @@ import { evalExpress, getValue, setValue } from '@hai2007/algorithm/value.js';
 
 [<< 查看文档](./apis/value.md)
 
+- 把 SCSS 解析成 CSS 的算法实现
+
+```js
+import scss from '@hai2007/algorithm/scss.js';
+```
+
+[<< 查看文档](./apis/scss.md)
+
 ## Special attention
 
 如果你希望一下子引入全部方法，可以有如下方式引入：

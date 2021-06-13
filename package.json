@@ -1,6 +1,6 @@
 {
   "name": "@hai2007/algorithm",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "🔪 一些前端常用的算法实现合集。",
   "main": "./dist/algorithm.min.js",
   "scripts": {
@@ -24,13 +24,13 @@
   },
   "homepage": "https://github.com/hai2007/algorithm.js#readme",
   "devDependencies": {
-    "@hai2007/nodejs": "^0.1.0",
+    "@hai2007/nodejs": "^1.0.1",
     "rollup": "^1.17.0",
     "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "uglify-js": "^3.10.2"
   },
   "dependencies": {
-    "@hai2007/tool": "^0.6.0"
+    "@hai2007/tool": "^0.6.6"
   }
 }

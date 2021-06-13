@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用例测试 | algorithm.js / scss.js</title>
+    <script src="../../dist/algorithm.js"></script>
+</head>
+
+<body>
+
+    <script>
+
+        var cssCode = algorithm.scss(
+            `
+            /*
+            测试代码
+            */
+
+            // css代码
+
+            body{
+                color:red;
+                font-size:14px;
+            }
+
+            // 嵌套
+
+            div{
+                span{
+                    font-size:12px;
+                    color:#ff00ff;
+                    &:before,
+                    &:after{
+                        content:"/*内容*/";
+                    }
+                    background-color:red;
+                }
+            }
+
+            div{
+                &.flag{
+                    background-color:green;
+                }
+            }
+
+            `
+        );
+
+        console.log(cssCode);
+
+    </script>
+
+</body>
+
+</html>

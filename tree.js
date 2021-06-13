@@ -8,7 +8,6 @@
  * Released under the MIT license
  */
 
-
 export default function (_config) {
 
     /**
