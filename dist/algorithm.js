@@ -4,12 +4,12 @@
  *
  * author 你好2007 < https://hai2007.gitee.io/sweethome >
  *
- * version 0.6.0
+ * version 0.6.2
  *
  * Copyright (c) 2020-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Sun Jun 13 2021 16:27:39 GMT+0800 (GMT+08:00)
+ * Date:Mon Jun 14 2021 09:11:34 GMT+0800 (GMT+08:00)
  */
 (function () {
     'use strict';
@@ -1610,7 +1610,7 @@
                 for (j = 0; j < preSplit.length; j++) {
 
                     // 去掉两端的空格
-                    preSelect[j] = preSplit[j].trim().replace(/\{$/, '');
+                    preSelect[j] = preSplit[j].replace(/\{$/, '').trim();
 
                     // 判断拼接方式
                     if (/^&/.test(preSelect[j])) {

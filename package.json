@@ -1,6 +1,6 @@
 {
   "name": "@hai2007/algorithm",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "description": "🔪 一些前端常用的算法实现合集。",
   "main": "./dist/algorithm.min.js",
   "scripts": {

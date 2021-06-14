@@ -44,7 +44,7 @@ export default function (source) {
             for (j = 0; j < preSplit.length; j++) {
 
                 // 去掉两端的空格
-                preSelect[j] = preSplit[j].trim().replace(/\{$/, '');
+                preSelect[j] = preSplit[j].replace(/\{$/, '').trim();
 
                 // 判断拼接方式
                 if (/^&/.test(preSelect[j])) {

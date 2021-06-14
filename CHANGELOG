@@ -44,3 +44,7 @@ v0.6.0:
     date:2021-06-13
     changes:
       -  增加 “把 SCSS 解析成 CSS 的算法实现” scss.js
+v0.6.2:
+    date:2021-06-14
+    changes:
+      -  修复 “scss.js” 中选择器空格问题
