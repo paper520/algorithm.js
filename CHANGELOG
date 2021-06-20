@@ -48,3 +48,7 @@ v0.6.2:
     date:2021-06-14
     changes:
       -  修复 “scss.js” 中选择器空格问题
+v0.6.3:
+    date:2021-06-20
+    changes:
+      -  添加算法练习册 ```workbook``` 到发布包中
